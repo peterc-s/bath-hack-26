@@ -1,0 +1,3 @@
+[submodule "trickle-down-dragonslayer/apple-tools"]
+	path = trickle-down-dragonslayer/apple-tools
+	url = https://github.com/peterc-s/apple-tools

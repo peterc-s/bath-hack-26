@@ -7,7 +7,9 @@ authors = [
     { name = "peterc-s", email = "petercs@purelymail.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "pyserial>=3.5",
+]
 
 [project.scripts]
 trickle-down-dragonslayer = "trickle_down_dragonslayer:main"
