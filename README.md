@@ -2,7 +2,7 @@
 
 Use [apple-tools](https://github.com/peterc-s/apple-tools) `preprocess` to turn unprocessed BASIC into a usable BASIC file:
 ```sh
-apple-tools preprocess unprocessed.bas > processed.bas
+uv run preprocess unprocessed.bas > processed.bas
 ```
 
 Then, you can use [basic2tape.sh](./basic2tape.sh) to convert the processed BASIC into a casette tape:
