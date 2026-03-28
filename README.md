@@ -1,5 +1,11 @@
 # Apple //e Text-Based Adventure Game
 
+To clone, since we use submodules, use:
+
+```sh
+git clone https://github.com/peterc-s/bath-hack-26 --recurse-submodules
+```
+
 ## Requirements
 
 - A Linux/MacOS machine (with `root` access, for accessing `/dev/tty*`), though this could be trivially ported to work on Windows.
