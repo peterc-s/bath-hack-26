@@ -1,3 +1,6 @@
 [submodule "trickle-down-dragonslayer/apple-tools"]
 	path = trickle-down-dragonslayer/apple-tools
 	url = https://github.com/peterc-s/apple-tools
+[submodule "trickle-down-dragonslayer/bastoken"]
+	path = trickle-down-dragonslayer/bastoken
+	url = https://github.com/KrisKennaway/bastoken

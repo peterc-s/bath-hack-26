@@ -40,7 +40,7 @@ trap cleanup EXIT
 tokenized=$tmpdir/tokenized.bas
 
 echo "tokenizing $input..."
-bastoken "$input" "$tokenized" || exit 1
+python bastoken/bastoken.py "$input" "$tokenized" || exit 1
 
 echo "generating audio $output..."
 c2t-96h -8 -b "$tokenized",801 "$output" || exit 1

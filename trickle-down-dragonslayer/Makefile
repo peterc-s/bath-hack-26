@@ -1,5 +1,6 @@
+.PHONY: run
 run: build/out.wav
-	uv run trickle-down-dragonslayer
+	sudo uv run trickle-down-dragonslayer
 
 build/out.wav: build build/main.bas
 	./basic2tape.sh build/main.bas build/main.wav
@@ -10,3 +11,7 @@ build/main.bas: build
 
 build:
 	mkdir -p build/
+
+.PHONY: clean
+clean:
+	rm -r build/
