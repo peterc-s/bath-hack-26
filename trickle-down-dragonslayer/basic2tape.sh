@@ -42,6 +42,8 @@ tokenized=$tmpdir/tokenized.bas
 echo "tokenizing $input..."
 python bastoken/bastoken.py "$input" "$tokenized" || exit 1
 
+wc -c "$tokenized"
+
 echo "generating audio $output..."
 c2t-96h -8 -b "$tokenized",801 "$output" || exit 1
 
