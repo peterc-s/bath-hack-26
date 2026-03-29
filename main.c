@@ -16,7 +16,8 @@ typedef enum {
   ITEM_M16,
   ITEM_CHEESEBURGER,
   ITEM_SPAM,
-  ITEM_CURRYWURST
+  ITEM_CURRYWURST,
+  ITEM_BEEF_STROGANOV,
 } ItemType;
 
 typedef enum {
@@ -98,6 +99,8 @@ const char *item_name(ItemType type) {
     return "SPAM";
   case ITEM_CURRYWURST:
     return "CURRYWURST";
+  case ITEM_BEEF_STROGANOV:
+    return "BEEF STROGANOV";
   default:
     return "NONE";
   }
@@ -184,16 +187,16 @@ void spawn_enemy(uint8_t type) {
     break;
   case 5:
     enemy.health = 10;
-    enemy.damage = 4;
+    enemy.damage = 3;
     strcpy(enemy.name, "KGBEARS");
     break;
   case 6:
     enemy.health = 14;
-    enemy.damage = 4;
+    enemy.damage = 3;
     strcpy(enemy.name, "PUTINI");
     break;
   case 7:
-    enemy.health = 20;
+    enemy.health = 16;
     enemy.damage = 5;
     strcpy(enemy.name, "THE RED DRAGON");
     break;
@@ -242,7 +245,7 @@ void check_for_encounter(void) {
 
 void init_player(void) {
   int i;
-  player.health = 4;
+  player.health = 6;
   player.damage = 1;
   player.room = ROOM_WHITE_CASTLE;
   strcpy(player.weapon_name, "SWORD");
@@ -259,6 +262,7 @@ void init_player(void) {
   room_item[ROOM_JOHNNY_FARMHOUSE] = ITEM_HAMMER;
   room_item[ROOM_BEACH] = ITEM_CURRYWURST;
   room_item[ROOM_MERLIN_WALL] = ITEM_M16;
+  room_item[ROOM_MT_GREMLIN_BASE] = ITEM_BEEF_STROGANOV;
 }
 
 void do_attack(char *noun) {
@@ -343,7 +347,8 @@ void do_look(char *noun) {
     printf("\nNORTH IS THE ROAD TO MT GREMLIN.\nTHE FACTORY IS WEST.");
     break;
   case ROOM_MT_GREMLIN_BASE:
-    printf("\nNORTH LEADS TO THE PEAK. THE IRON WALL\nIS BACK SOUTH.");
+    printf("A STRONG, BEEFY, STROGANOVY SMELL\nOVERWHELMS YOUR NOSTRILS\nNORTH "
+           "LEADS TO THE PEAK. THE IRON WALL\nIS BACK SOUTH.");
     break;
   case ROOM_MT_GREMLIN_PEAK:
     printf("\nTHE RED DRAGON IS HERE. THE ONLY WAY\nOUT IS SOUTH TO THE BASE.");
@@ -483,11 +488,11 @@ void do_pickup(char *noun) {
   }
 
   if (item == ITEM_HAMMER) {
-    player.damage = 2;
+    player.damage = 3;
     strcpy(player.weapon_name, "HAMMER");
     printf("\nYOU EQUIP THE HAMMER! DAMAGE INCREASED.");
   } else if (item == ITEM_M16) {
-    player.damage = 5;
+    player.damage = 6;
     strcpy(player.weapon_name, "M16");
     printf("\nYOU EQUIP THE M16! FREEDOM INTENSIFIES.");
   } else {
@@ -511,11 +516,13 @@ void do_use(char *noun) {
       uint8_t heal = 0;
 
       if (used == ITEM_CHEESEBURGER)
-        heal = 2;
-      else if (used == ITEM_SPAM)
-        heal = 1;
-      else if (used == ITEM_CURRYWURST)
         heal = 3;
+      else if (used == ITEM_SPAM)
+        heal = 2;
+      else if (used == ITEM_CURRYWURST)
+        heal = 4;
+      else if (used == ITEM_BEEF_STROGANOV)
+        heal = 9;
 
       player.health += heal;
       printf("\nYOU USED THE %s AND RECOVERED %d HP!", item_name(used), heal);
