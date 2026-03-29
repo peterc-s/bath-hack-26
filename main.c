@@ -136,19 +136,19 @@ void describe_encounter(void) {
            "UTTER MADNESS' YOU THINK\nTO YOURSELF.");
     break;
   case ROOM_JOHNNY_FARM:
-    printf("JOHNNY THE FARMER\nDROPS HIS PITCHFORK AND PULLS\nA SICKLE! HE "
-           "LOOKS BUFF\nBUT CLEARLY NOT AS CHISELED AS YOU.\n");
+    printf("JOHNNY THE FARMER DROPS HIS\nPITCHFORK AND PULLS A SICKLE!\nHE "
+           "LOOKS BUFF.\nBUT CLEARLY NOT AS CHISELED AS YOU.\n");
     break;
   case ROOM_CAR_FACTORY:
     printf("A MASSIVE GREEN OGRE IN RED OVERALLS\nSTEPS OUT FROM THE ASSEMBLY "
            "LINE!");
     break;
   case ROOM_MERLIN_WALL:
-    printf("HANS THE REDISTRIBUTOR STEPS OUT,\nTRYING TO DIVIDE YOUR HEALTH\n "
+    printf("HANS THE REDISTRIBUTOR STEPS OUT,\nTRYING TO DIVIDE YOUR HEALTH\n"
            "BAR EQUALLY WITH THE ROOM!");
     break;
   case ROOM_IRON_WALL:
-    printf("LITERAL BEARS, YES: BEARS,\n IN USHANKAS APPEAR!\nTHEY SEEM TO "
+    printf("LITERAL BEARS, YES: BEARS,\nIN USHANKAS APPEAR!\nTHEY SEEM TO "
            "KNOW YOUR LAST NAME.");
     break;
   case ROOM_MT_GREMLIN_BASE:
@@ -283,7 +283,7 @@ void do_attack(char *noun) {
   if (enemy.health <= player.damage) {
     enemy.health = 0;
     room_cleared[player.room] = 1;
-    printf("\nYOU DEFEATED THE %s!", enemy.name);
+    printf("\nYOU DEFEATED %s!", enemy.name);
     if (player.room == ROOM_MT_GREMLIN_PEAK) {
       printf("\n\nVICTORY! FREEDOM FOR RUSKILAND!");
       freedom = HELL_YEAH;
@@ -341,26 +341,26 @@ void do_look(char *noun) {
     printf("\nA QUAINT FARMHOUSE.\nA STEW HAS BEEN LEFT ON THE AGA\nAND ANGRY "
            "LETTERS DETAILING QUOTAS ARE\nSTREWN AROUND.\nA HAMMER LIES BY THE "
            "DOOR.\nCOULD BE YOURS NOW.\nNOT LIKE HE BELIEVED IN "
-           "PERSONAL\nPROPERTY ANYWAY.\nTHE FIELD\nIS BACK TO THE WEST.");
+           "PERSONAL\nPROPERTY ANYWAY.\nTHE FIELD IS BACK TO THE WEST.");
     break;
   case ROOM_FERRY_PIER:
     printf("\nYOU'RE AT THE PIER. THE FERRYMAN\nWAVES AND TELLS YOU THE "
            "TOLL\nIS 5 MONIES. YOU TELL HIM THAT\nYOUR MISSION TO "
-           "RESTORE\nCAPITALISM TO THE WORLD IS MORE\nIMPORTANT THAT MONEY AND "
+           "RESTORE\nCAPITALISM TO THE WORLD IS MORE\nIMPORTANT THAN MONEY AND "
            "THAT\nHIS WORK WILL INDIRECTLY PROVIDE HIM\nWITH ALL HE NEEDS IN "
            "LIFE.\nTHE FARM IS BACK SOUTH.\nTHE FERRY LIES NORTH.");
     break;
   case ROOM_BEACH:
     printf("\nTHE BEERMAN DEADLY REPUBLIC,\nBDR FOR SHORT. THIS IS THE\nLAST "
            "COUNTRY BEFORE THE IRON WALL\nWHICH SURROUNDS RUSKYLAND AND MT "
-           "GREMLIN.\nIT IS AN INDUSTRIOUS NATION\nINHABITED BY OGRES. THE "
+           "\nGREMLIN.IT IS AN INDUSTRIOUS NATION\nINHABITED BY OGRES. THE "
            "WAVES\nARE CRASHING AGAINST THE SHORE.\nTO THE NORTH YOU SEE "
            "A\nFACTORY. IS THAT... CURRYWURST?");
     break;
   case ROOM_CAR_FACTORY:
     printf(
         "\nYOU ARE IN WHAT APPEARS TO BE A CAR\nFACTORY, BUT IT IS COMPLETELY "
-        "EMPTY.\nYOU WONDER IF ANYONE IN THE RED EMPIRE\nEVER GETS A CAR.\n "
+        "EMPTY.\nYOU WONDER IF ANYONE IN THE RED EMPIRE\nEVER GETS A CAR.\n"
         "WEST IS A ROAD, EAST IS THE IRON WALL.\nTHE BEACH IS SOUTH.");
     break;
   case ROOM_MERLIN_WALL:
@@ -368,7 +368,7 @@ void do_look(char *noun) {
            "THE RECENTLY ERECTED MERLIN\nWALL. YOU THINK TO YOURSELF "
            "'WHAT\nCAN BE MADE IN A DAY CAN BE BROUGHT\nDOWN IN A DAY, PERHAPS "
            "SERENADED\nBY A VERY STRANGE CHOICE OF\nMUSICIAN'. AN M16 LEANS "
-           "AGAINST THE WALL.\nTHE FACTORY IS BACK EAST.");
+           "AGAINST THE \nWALL. THE FACTORY IS BACK EAST.");
     break;
   case ROOM_IRON_WALL:
     printf("\nTURNS OUT THE IRON WALL WAS NOT\nA REAL WALL BUT JUST "
@@ -379,7 +379,7 @@ void do_look(char *noun) {
     printf(
         "A WHOLE LOAD OF NOTHINGNESS.\nYOU BARELY SEE A FEW FEET IN FRONT\nOF "
         "YOU. YOU FEEL YOUR LUSCIOUS\nBLONDE LOCKS FREEZING OVER.\nA STRONG, "
-        "BEEFY, STROGANOVY SMELL\nOVERWHELMS YOUR NOSTRILS\nNORTH "
+        "BEEFY, STROGANOVY SMELL\nOVERWHELMS YOUR NOSTRILS.\nNORTH "
         "LEADS TO THE PEAK. THE IRON WALL\nIS BACK SOUTH.");
     break;
   case ROOM_MT_GREMLIN_PEAK:
@@ -388,7 +388,7 @@ void do_look(char *noun) {
   }
 }
 
-void do_goto(char *noun) {
+void do_go(char *noun) {
   Room next_room = player.room;
   uint8_t moved = 0;
 
@@ -577,7 +577,7 @@ typedef struct {
 
 #define NUM_VERBS 5
 const Command commands[NUM_VERBS] = {{"ATTACK", do_attack},
-                                     {"GOTO", do_goto},
+                                     {"GO", do_go},
                                      {"PICKUP", do_pickup},
                                      {"LOOK", do_look},
                                      {"USE", do_use}};
