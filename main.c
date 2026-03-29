@@ -1,12 +1,23 @@
 #include <conio.h>
 #include <ctype.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
 #define MAXLINELEN 40
+#define INVSIZE 5
 
 /* --- Enums & Structs --- */
+
+typedef enum {
+  ITEM_NONE,
+  ITEM_HAMMER,
+  ITEM_M16,
+  ITEM_CHEESEBURGER,
+  ITEM_SPAM,
+  ITEM_CURRYWURST
+} ItemType;
 
 typedef enum {
   WEAPON_SWORD,
@@ -37,10 +48,10 @@ typedef struct {
 typedef struct {
   uint8_t health;
   uint8_t damage;
-  uint8_t weapon;
   Room room;
   char name[MAXLINELEN];
   char weapon_name[MAXLINELEN];
+  ItemType inventory[INVSIZE];
 } Player;
 
 /* --- Globals --- */
@@ -49,6 +60,7 @@ char input[MAXLINELEN];
 Enemy enemy;
 Player player;
 uint8_t room_cleared[12];
+ItemType room_item[12];
 
 /* --- Utility Functions --- */
 
@@ -64,7 +76,7 @@ void readline(char *instr) {
   char c = getchar();
 
   while (c != '\n' && c != '\r') {
-    if (isalpha(c) || isspace(c)) {
+    if (isalpha(c) || isspace(c) || isdigit(c)) {
       if (slen < MAXLINELEN - 1) {
         instr[slen++] = toupper(c);
       }
@@ -72,6 +84,35 @@ void readline(char *instr) {
     c = getchar();
   }
   instr[slen] = '\0';
+}
+
+const char *item_name(ItemType type) {
+  switch (type) {
+  case ITEM_HAMMER:
+    return "HAMMER";
+  case ITEM_M16:
+    return "M16";
+  case ITEM_CHEESEBURGER:
+    return "CHEESEBURGER";
+  case ITEM_SPAM:
+    return "SPAM";
+  case ITEM_CURRYWURST:
+    return "CURRYWURST";
+  default:
+    return "NONE";
+  }
+}
+
+void add_to_inventory(ItemType item) {
+  int i;
+  for (i = 0; i < INVSIZE; i++) {
+    if (player.inventory[i] == ITEM_NONE) {
+      player.inventory[i] = item;
+      printf("\n%s ADDED TO INVENTORY.", item_name(item));
+      return;
+    }
+  }
+  printf("\nINVENTORY FULL!");
 }
 
 void show_stats(void) {
@@ -200,15 +241,24 @@ void check_for_encounter(void) {
 /* --- Game Logic --- */
 
 void init_player(void) {
-  uint8_t i;
+  int i;
   player.health = 4;
   player.damage = 1;
   player.room = ROOM_WHITE_CASTLE;
-  player.weapon = WEAPON_SWORD;
   strcpy(player.weapon_name, "SWORD");
-  for (i = 0; i < 12; i++)
+  for (i = 0; i < INVSIZE; i++) {
+    player.inventory[i] = ITEM_NONE;
+  }
+  for (i = 0; i < 12; i++) {
     room_cleared[i] = 0;
-  spawn_enemy(0);
+    room_item[i] = ITEM_NONE;
+  }
+
+  room_item[ROOM_WHITE_CASTLE] = ITEM_CHEESEBURGER;
+  room_item[ROOM_OUTSKIRTS_LONDIS] = ITEM_SPAM;
+  room_item[ROOM_JOHNNY_FARMHOUSE] = ITEM_HAMMER;
+  room_item[ROOM_BEACH] = ITEM_CURRYWURST;
+  room_item[ROOM_MERLIN_WALL] = ITEM_M16;
 }
 
 void do_attack(char *noun) {
@@ -240,6 +290,22 @@ void do_attack(char *noun) {
 }
 
 void do_look(char *noun) {
+  int empty;
+  int i;
+  if (noun != NULL && strcmp(noun, "INVENTORY") == 0) {
+    printf("\nIN YOUR BAG: ");
+    empty = 1;
+    for (i = 0; i < INVSIZE; i++) {
+      if (player.inventory[i] != ITEM_NONE) {
+        printf("[%s] ", item_name(player.inventory[i]));
+        empty = 0;
+      }
+    }
+    if (empty)
+      printf("NOTHING BUT DUST.");
+    return;
+  }
+
   if (noun == NULL || strcmp(noun, "AROUND") != 0) {
     printf("\nLOOK AT WHAT? (TRY 'LOOK AROUND')");
     return;
@@ -252,7 +318,7 @@ void do_look(char *noun) {
     break;
   case ROOM_OUTSKIRTS_LONDIS:
     printf("\nTHE PEOPLE WANT TO OVERTHROW THE ROOF\nTHATCHER. TO THE NORTH "
-           "ARE FIELDS.");
+           "ARE FIELDS.\nTHE SMELL OF SPAM IS OVERWHELMING.");
     break;
   case ROOM_JOHNNY_FARM:
     printf("\nTO THE EAST IS A FARMHOUSE. NORTH IS\nTHE FERRY PIER.");
@@ -264,7 +330,8 @@ void do_look(char *noun) {
     printf("\nTHE BOAT LIES TO THE NORTH. THE FARM\nIS BACK SOUTH.");
     break;
   case ROOM_BEACH:
-    printf("\nTHE BDR. TO THE NORTH YOU SEE A\nFACTORY.");
+    printf(
+        "\nTHE BDR. TO THE NORTH YOU SEE A\nFACTORY. IS THAT... CURRYWURST?");
     break;
   case ROOM_CAR_FACTORY:
     printf("\nWEST IS A ROAD, EAST IS THE IRON WALL.\nTHE BEACH IS SOUTH.");
@@ -403,17 +470,64 @@ void do_goto(char *noun) {
 }
 
 void do_pickup(char *noun) {
-  if (noun != NULL)
-    printf("\nYOU PICKED UP THE %s.", noun);
-  else
+  ItemType item;
+  if (noun == NULL) {
     printf("\nPICK UP WHAT?");
+    return;
+  }
+
+  item = room_item[player.room];
+  if (item == ITEM_NONE || strcmp(noun, item_name(item)) != 0) {
+    printf("\nTHERE IS NO %s HERE.", noun);
+    return;
+  }
+
+  if (item == ITEM_HAMMER) {
+    player.damage = 2;
+    strcpy(player.weapon_name, "HAMMER");
+    printf("\nYOU EQUIP THE HAMMER! DAMAGE INCREASED.");
+  } else if (item == ITEM_M16) {
+    player.damage = 5;
+    strcpy(player.weapon_name, "M16");
+    printf("\nYOU EQUIP THE M16! FREEDOM INTENSIFIES.");
+  } else {
+    add_to_inventory(item);
+  }
+  room_item[player.room] = ITEM_NONE;
 }
 
 void do_use(char *noun) {
-  if (noun != NULL)
-    printf("\nYOU USED THE %s.", noun);
-  else
+  int i;
+  int j;
+  if (noun == NULL) {
     printf("\nUSE WHAT?");
+    return;
+  }
+
+  for (i = 0; i < INVSIZE; i++) {
+    if (player.inventory[i] != ITEM_NONE &&
+        strcmp(noun, item_name(player.inventory[i])) == 0) {
+      ItemType used = player.inventory[i];
+      uint8_t heal = 0;
+
+      if (used == ITEM_CHEESEBURGER)
+        heal = 2;
+      else if (used == ITEM_SPAM)
+        heal = 1;
+      else if (used == ITEM_CURRYWURST)
+        heal = 3;
+
+      player.health += heal;
+      printf("\nYOU USED THE %s AND RECOVERED %d HP!", item_name(used), heal);
+
+      /* Shift inventory down */
+      for (j = i; j < INVSIZE - 1; j++)
+        player.inventory[j] = player.inventory[j + 1];
+      player.inventory[INVSIZE - 1] = ITEM_NONE;
+      return;
+    }
+  }
+  printf("\nYOU DON'T HAVE A %s.", noun);
 }
 
 /* --- Commands --- */
