@@ -7,6 +7,7 @@
 
 #define MAXLINELEN 40
 #define INVSIZE 5
+#define HELL_YEAH 1
 
 /* --- Enums & Structs --- */
 
@@ -62,6 +63,7 @@ Enemy enemy;
 Player player;
 uint8_t room_cleared[12];
 ItemType room_item[12];
+uint8_t freedom = 0;
 
 /* --- Utility Functions --- */
 
@@ -130,30 +132,34 @@ void describe_encounter(void) {
   printf("\n");
   switch (player.room) {
   case ROOM_OUTSKIRTS_LONDIS:
-    printf("A DISGRUNTLED WORKER BRANDISHES A\nPROTEST SIGN AT YOU!");
+    printf("A DISGRUNTLED PEASANT BRANDISHES A\nPROTEST SIGN AT YOU!\n'WHAT "
+           "UTTER MADNESS' YOU THINK\nTO YOURSELF.");
     break;
   case ROOM_JOHNNY_FARM:
-    printf("JOHNNY DROPS HIS PITCHFORK AND PULLS\nA SICKLE! HE LOOKS BUFF.");
+    printf("JOHNNY THE FARMER\nDROPS HIS PITCHFORK AND PULLS\nA SICKLE! HE "
+           "LOOKS BUFF\nBUT CLEARLY NOT AS CHISELED AS YOU.\n");
     break;
   case ROOM_CAR_FACTORY:
-    printf(
-        "A MASSIVE GREEN OGRE IN OVERALLS\nSTEPS OUT FROM THE ASSEMBLY LINE!");
+    printf("A MASSIVE GREEN OGRE IN RED OVERALLS\nSTEPS OUT FROM THE ASSEMBLY "
+           "LINE!");
     break;
   case ROOM_MERLIN_WALL:
-    printf("HANS STEPS OUT, TRYING TO DIVIDE YOUR\nHEALTH BAR EQUALLY WITH THE "
-           "ROOM!");
+    printf("HANS THE REDISTRIBUTOR STEPS OUT,\nTRYING TO DIVIDE YOUR HEALTH\n "
+           "BAR EQUALLY WITH THE ROOM!");
     break;
   case ROOM_IRON_WALL:
-    printf(
-        "LITERAL BEARS IN USHANKAS APPEAR!\nTHEY SEEM TO KNOW YOUR LAST NAME.");
+    printf("LITERAL BEARS, YES: BEARS,\n IN USHANKAS APPEAR!\nTHEY SEEM TO "
+           "KNOW YOUR LAST NAME.");
     break;
   case ROOM_MT_GREMLIN_BASE:
     printf(
-        "A SMALL MAN ON A LARGE HORSE RIDES\nOUT. HE IS STRANGELY SHIRTLESS.");
+        "A SMALL MAN ON A LARGE HORSE\nRIDES OUT. HE IS STRANGELY\nSHIRTLESS. "
+        "HIS BALD HEAD BLINDING\nYOU WITH THE SUN'S REFLECTION.");
     break;
   case ROOM_MT_GREMLIN_PEAK:
-    printf(
-        "THE RED DRAGON LETS OUT A ROAR THAT\nSOUNDS LIKE CENTRAL PLANNING!");
+    printf("THE RED DRAGON RESTS PEACEFULLY ATOP\nMOUNT GREMLIN. CLEARLY TIRED "
+           "FROM\nSCHEMING. IT SLOWLY OPENS ITS DEEP\nRED EYES.\nTHE RED "
+           "DRAGON LETS OUT A ROAR THAT\nSOUNDS LIKE CENTRAL PLANNING!\n");
     break;
   default:
     break;
@@ -168,7 +174,7 @@ void spawn_enemy(uint8_t type) {
   case 1:
     enemy.health = 1;
     enemy.damage = 1;
-    strcpy(enemy.name, "PEASANT");
+    strcpy(enemy.name, "THE PEASANT");
     break;
   case 2:
     enemy.health = 2;
@@ -178,7 +184,7 @@ void spawn_enemy(uint8_t type) {
   case 3:
     enemy.health = 4;
     enemy.damage = 2;
-    strcpy(enemy.name, "KOMBINAT OGRE");
+    strcpy(enemy.name, "THE KOMBINAT OGRE");
     break;
   case 4:
     enemy.health = 6;
@@ -188,7 +194,7 @@ void spawn_enemy(uint8_t type) {
   case 5:
     enemy.health = 10;
     enemy.damage = 3;
-    strcpy(enemy.name, "KGBEARS");
+    strcpy(enemy.name, "THE KGBEARS");
     break;
   case 6:
     enemy.health = 14;
@@ -272,7 +278,7 @@ void do_attack(char *noun) {
     return;
   }
 
-  printf("\nYOU SWING YOUR %s AT THE %s!", player.weapon_name, enemy.name);
+  printf("\nYOU SWING YOUR %s AT %s!", player.weapon_name, enemy.name);
 
   if (enemy.health <= player.damage) {
     enemy.health = 0;
@@ -280,6 +286,7 @@ void do_attack(char *noun) {
     printf("\nYOU DEFEATED THE %s!", enemy.name);
     if (player.room == ROOM_MT_GREMLIN_PEAK) {
       printf("\n\nVICTORY! FREEDOM FOR RUSKILAND!");
+      freedom = HELL_YEAH;
     }
   } else {
     enemy.health -= player.damage;
@@ -321,37 +328,62 @@ void do_look(char *noun) {
            "THE EAST.");
     break;
   case ROOM_OUTSKIRTS_LONDIS:
-    printf("\nTHE PEOPLE WANT TO OVERTHROW THE ROOF\nTHATCHER. TO THE NORTH "
-           "ARE FIELDS.\nTHE SMELL OF SPAM IS OVERWHELMING.");
+    printf("\nYOU STAND AT THE EDGE OF THE\nLARGEST CITY IN ENGLANDLAND.\nYOU "
+           "HEAR THE DISCONTENT YOU WERE WARNED\nABOUT. THE WORKING PEOPLE OF "
+           "LONDIS ARE\nTALKING OF OVERTHROWING THEIR LEADER:\nTHE ROOF "
+           "THATCHER.\nTO THE NORTH OF YOU ARE FIELDS FULL\nOF DISCONTENT "
+           "PEASANTS.\nTHE SMELL OF SPAM IS OVERWHELMING.");
     break;
   case ROOM_JOHNNY_FARM:
     printf("\nTO THE EAST IS A FARMHOUSE. NORTH IS\nTHE FERRY PIER.");
     break;
   case ROOM_JOHNNY_FARMHOUSE:
-    printf("\nA HAMMER LIES BY THE DOOR. THE FIELD\nIS BACK TO THE WEST.");
+    printf("\nA QUAINT FARMHOUSE.\nA STEW HAS BEEN LEFT ON THE AGA\nAND ANGRY "
+           "LETTERS DETAILING QUOTAS ARE\nSTREWN AROUND.\nA HAMMER LIES BY THE "
+           "DOOR.\nCOULD BE YOURS NOW.\nNOT LIKE HE BELIEVED IN "
+           "PERSONAL\nPROPERTY ANYWAY.\nTHE FIELD\nIS BACK TO THE WEST.");
     break;
   case ROOM_FERRY_PIER:
-    printf("\nTHE BOAT LIES TO THE NORTH. THE FARM\nIS BACK SOUTH.");
+    printf("\nYOU'RE AT THE PIER. THE FERRYMAN\nWAVES AND TELLS YOU THE "
+           "TOLL\nIS 5 MONIES. YOU TELL HIM THAT\nYOUR MISSION TO "
+           "RESTORE\nCAPITALISM TO THE WORLD IS MORE\nIMPORTANT THAT MONEY AND "
+           "THAT\nHIS WORK WILL INDIRECTLY PROVIDE HIM\nWITH ALL HE NEEDS IN "
+           "LIFE.\nTHE FARM IS BACK SOUTH.\nTHE FERRY LIES NORTH.");
     break;
   case ROOM_BEACH:
-    printf(
-        "\nTHE BDR. TO THE NORTH YOU SEE A\nFACTORY. IS THAT... CURRYWURST?");
+    printf("\nTHE BEERMAN DEADLY REPUBLIC,\nBDR FOR SHORT. THIS IS THE\nLAST "
+           "COUNTRY BEFORE THE IRON WALL\nWHICH SURROUNDS RUSKYLAND AND MT "
+           "GREMLIN.\nIT IS AN INDUSTRIOUS NATION\nINHABITED BY OGRES. THE "
+           "WAVES\nARE CRASHING AGAINST THE SHORE.\nTO THE NORTH YOU SEE "
+           "A\nFACTORY. IS THAT... CURRYWURST?");
     break;
   case ROOM_CAR_FACTORY:
-    printf("\nWEST IS A ROAD, EAST IS THE IRON WALL.\nTHE BEACH IS SOUTH.");
+    printf(
+        "\nYOU ARE IN WHAT APPEARS TO BE A CAR\nFACTORY, BUT IT IS COMPLETELY "
+        "EMPTY.\nYOU WONDER IF ANYONE IN THE RED EMPIRE\nEVER GETS A CAR.\n "
+        "WEST IS A ROAD, EAST IS THE IRON WALL.\nTHE BEACH IS SOUTH.");
     break;
   case ROOM_MERLIN_WALL:
-    printf("\nAN M16 LEANS AGAINST THE WALL. THE\nFACTORY IS BACK EAST.");
+    printf("\nA HUGE WALL SEPARATES YOU FROM\nWESTERN BEERMANY.\nIT MUST BE "
+           "THE RECENTLY ERECTED MERLIN\nWALL. YOU THINK TO YOURSELF "
+           "'WHAT\nCAN BE MADE IN A DAY CAN BE BROUGHT\nDOWN IN A DAY, PERHAPS "
+           "SERENADED\nBY A VERY STRANGE CHOICE OF\nMUSICIAN'. AN M16 LEANS "
+           "AGAINST THE WALL.\nTHE FACTORY IS BACK EAST.");
     break;
   case ROOM_IRON_WALL:
-    printf("\nNORTH IS THE ROAD TO MT GREMLIN.\nTHE FACTORY IS WEST.");
+    printf("\nTURNS OUT THE IRON WALL WAS NOT\nA REAL WALL BUT JUST "
+           "SOMETHING\nPEOPLE SAID. WELL, THE MORE YOU\nKNOW! NORTH IS THE "
+           "ROAD TO MT GREMLIN.\nTHE FACTORY IS WEST.");
     break;
   case ROOM_MT_GREMLIN_BASE:
-    printf("A STRONG, BEEFY, STROGANOVY SMELL\nOVERWHELMS YOUR NOSTRILS\nNORTH "
-           "LEADS TO THE PEAK. THE IRON WALL\nIS BACK SOUTH.");
+    printf(
+        "A WHOLE LOAD OF NOTHINGNESS.\nYOU BARELY SEE A FEW FEET IN FRONT\nOF "
+        "YOU. YOU FEEL YOUR LUSCIOUS\nBLONDE LOCKS FREEZING OVER.\nA STRONG, "
+        "BEEFY, STROGANOVY SMELL\nOVERWHELMS YOUR NOSTRILS\nNORTH "
+        "LEADS TO THE PEAK. THE IRON WALL\nIS BACK SOUTH.");
     break;
   case ROOM_MT_GREMLIN_PEAK:
-    printf("\nTHE RED DRAGON IS HERE. THE ONLY WAY\nOUT IS SOUTH TO THE BASE.");
+    printf("\nTHE RED DRAGON IS HERE.\nSTOP IT WHILE YOU CAN\n");
     break;
   }
 }
@@ -574,7 +606,7 @@ void intro(void) {
   printf("       @  _\\   \\-===-/   /_  '\n");
   printf("         (_(_(_)'-=-'(_)_)_)\n");
   printf("         @\"@\"@\"        \"@\"@\"@\n");
-  printf("      TRICKLE-DOWN DRAGONSLAYER\n");
+  printf("      TRICKLE-DOWN DRAGONSLAYER\n\n");
 
   delay(30000);
 
@@ -618,7 +650,7 @@ void prompt_action(void) {
   uint8_t found;
 
   while (1) {
-    if (player.health <= 0) {
+    if (player.health <= 0 || freedom) {
       break;
     }
     if (enemy.health > 0) {

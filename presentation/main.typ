@@ -166,6 +166,6 @@ TODO
 - A useless Super Serial Card (dodgy clone from '84) #pause
 - A broken BASIC game #pause
 - A program that reads from the cassette at 2 charaters a second #pause
-- Nearly a thousand lines of messy C89 #pause
+- Over six hundred lines of messy C89 #pause
 
 #align(center, text(size: 2em)[Trickle-Down Dragonslayer])
