@@ -393,6 +393,7 @@ void do_goto(char *noun) {
   }
 
   if (moved) {
+    clrscr();
     player.room = next_room;
     printf("\nYOU ARRIVE AT YOUR DESTINATION.");
     check_for_encounter();
@@ -433,25 +434,25 @@ const Command commands[NUM_VERBS] = {{"ATTACK", do_attack},
 void intro(void) {
   clrscr();
   printf("        \\(______      ______)/\n");
-  printf("        /`.----.\\    /.----.`\\\n");
+  printf("        /@.----.\\    /.----.@\\\n");
   printf("       } /      :} {:       \\ {\n");
   printf("      / {        } {        } \\\n");
   printf("      } }      ) } { (      { {\n");
-  printf("     / {      /|\\}!{/|\\      } \\\n");
+  printf("     / {      /]\\}!{/[\\      } \\\n");
   printf("     } }     ( (.\"^\".) )     { {\n");
-  printf("    / {       (d\\   /b)       } \\\n");
-  printf("    } }        |\\~  ~/|       { {\n");
-  printf("   / /         | )   ( |        \\ \\\n");
-  printf("  { {         _)(,   ,)(_        } }\n");
-  printf("   } }       //  `\";\"`  \\\\      { {\n");
-  printf("  / /       //     (     \\\\      \\ \\\n");
-  printf(" { {       {(     -=)     )}      } }\n");
+  printf("    / {       (O\\   /O)       } \\\n");
+  printf("    } }        ]\\^ ^/[       { {\n");
+  printf("   / /        ] )   ( [        \\ \\\n");
+  printf("  { {        _)(,   ,)(_        } }\n");
+  printf("   } }      //  @\";\"@  \\\\      { {\n");
+  printf("  / /      //     (     \\\\      \\ \\\n");
+  printf(" { {      {(     -=)     )}      } }\n");
   printf("  \\ \\      /)   -=(=-      (\\    / /\n");
-  printf("   `\\\\  /'/    /-=|\\-\\    \\`\\  //'\n");
-  printf("     `\\{  |   ( -===- )   |  }/'\n");
-  printf("       `  _\\   \\-===-/   /_  '\n");
+  printf("   @\\\\  /'/    /-=[\\-\\    \\@\\  //'\n");
+  printf("     @\\{  ]   ( -===- )   [  }/'\n");
+  printf("       @  _\\   \\-===-/   /_  '\n");
   printf("         (_(_(_)'-=-'(_)_)_)\n");
-  printf("         `\"`\"`\"        \"`\"`\"`\n");
+  printf("         @\"@\"@\"        \"@\"@\"@\n");
   printf("      TRICKLE-DOWN DRAGONSLAYER\n");
 
   delay(30000);
