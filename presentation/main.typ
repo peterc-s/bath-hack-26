@@ -156,7 +156,7 @@ Now that our technical woes are behind us, we can finally focus on our business 
 
 == Marketing Materials
 
-TODO
+#align(center, image("media/cassette.jpg", height: 90%))
 
 == The Finished Product
 
