@@ -169,3 +169,60 @@ TODO
 - Over six hundred lines of messy C89 #pause
 
 #align(center, text(size: 2em)[Trickle-Down Dragonslayer])
+
+= Bugger
+
+== Disaster
+
+#pause
+09:56 AM. #pause Capacitor in the PSU blows. #pause All the magic smoke poured out.
+
+#pause
+Stright to the hardware lab. #pause Nothing usable.
+
+#pause
+A little birdy told us about a broken unused microwave that _may_ just have the 250V 47$mu$F capacitor we need.
+
+#pause
+Screwdrivers in hand, we headed off to tear the microwave apart.
+
+#pagebreak()
+
+#align(center, image("media/microwave-open.jpg", height: 90%))
+
+#pagebreak()
+
+Unfortunately, this didn't have the capacitor we needed.
+
+#align(center, image("media/microwave-closed.jpg", height: 80%))
+
+#pagebreak()
+
+Maybe the makerspace would have some? #pause Nope, we checked.
+
+#pause
+Maybe some bins in the underdeck would have some? #pause Nope, we checked.
+
+#pause
+Time for plan B.
+
+#pagebreak()
+
+#align(center, image("media/plan-b.jpg", height: 90%))
+
+= Don't Jinx It
+
+== Final Product
+
+#pause
+- A fixed Apple \/\/e #pause
+- A borked EF ROM #pause
+- A useless Super Serial Card (dodgy clone from '84) #pause
+- A broken BASIC game #pause
+- A program that reads from the cassette at 2 charaters a second #pause
+- Over six hundred lines of messy C89 #pause
+- A broken power supply #pause
+- A microwave main board #pause
+- The memories we made along the way
+
+= Trickle-Down Dragonslayer
