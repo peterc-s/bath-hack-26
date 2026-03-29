@@ -76,7 +76,7 @@ void spawn_enemy(uint8_t type) {
   switch (type) {
   case 0:
     enemy.health = 0;
-    break; /* No Enemy */
+    break;
   case 1:
     enemy.health = 1;
     enemy.damage = 1;
@@ -203,16 +203,133 @@ void do_look(char *noun) {
 }
 
 void do_goto(char *noun) {
-  printf("%s", noun);
-  printf("\nWHERE TO?");
+  Room next_room = player.room;
+  uint8_t moved = 0;
+
+  if (noun == NULL) {
+    printf("\nGO WHERE? (NORTH, SOUTH, EAST, WEST)");
+    return;
+  }
+
+  switch (player.room) {
+  case ROOM_WHITE_CASTLE:
+    if (strcmp(noun, "EAST") == 0) {
+      printf("\nYOU RIDE A FLYING PIG TO LONDIS!");
+      next_room = ROOM_OUTSKIRTS_LONDIS;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_OUTSKIRTS_LONDIS:
+    if (strcmp(noun, "NORTH") == 0) {
+      next_room = ROOM_JOHNNY_FARM;
+      moved = 1;
+    } else if (strcmp(noun, "WEST") == 0) {
+      next_room = ROOM_WHITE_CASTLE;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_JOHNNY_FARM:
+    if (strcmp(noun, "EAST") == 0) {
+      next_room = ROOM_JOHNNY_FARMHOUSE;
+      moved = 1;
+    } else if (strcmp(noun, "NORTH") == 0) {
+      next_room = ROOM_FERRY_PIER;
+      moved = 1;
+    } else if (strcmp(noun, "SOUTH") == 0) {
+      next_room = ROOM_OUTSKIRTS_LONDIS;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_JOHNNY_FARMHOUSE:
+    if (strcmp(noun, "WEST") == 0) {
+      next_room = ROOM_JOHNNY_FARM;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_FERRY_PIER:
+    if (strcmp(noun, "NORTH") == 0) {
+      printf("\nTHE BOAT TAKES YOU ACROSS THE WATER.");
+      next_room = ROOM_BEACH;
+      moved = 1;
+    } else if (strcmp(noun, "SOUTH") == 0) {
+      next_room = ROOM_JOHNNY_FARM;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_BEACH:
+    if (strcmp(noun, "NORTH") == 0) {
+      next_room = ROOM_CAR_FACTORY;
+      moved = 1;
+    } else if (strcmp(noun, "SOUTH") == 0) {
+      next_room = ROOM_FERRY_PIER;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_CAR_FACTORY:
+    if (strcmp(noun, "WEST") == 0) {
+      next_room = ROOM_MERLIN_WALL;
+      moved = 1;
+    } else if (strcmp(noun, "EAST") == 0) {
+      next_room = ROOM_IRON_WALL;
+      moved = 1;
+    } else if (strcmp(noun, "SOUTH") == 0) {
+      next_room = ROOM_BEACH;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_MERLIN_WALL:
+    if (strcmp(noun, "EAST") == 0) {
+      next_room = ROOM_CAR_FACTORY;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_IRON_WALL:
+    if (strcmp(noun, "NORTH") == 0) {
+      next_room = ROOM_MOUNT_GREMLIN;
+      moved = 1;
+    } else if (strcmp(noun, "WEST") == 0) {
+      next_room = ROOM_CAR_FACTORY;
+      moved = 1;
+    }
+    break;
+
+  case ROOM_MOUNT_GREMLIN:
+    if (strcmp(noun, "SOUTH") == 0) {
+      next_room = ROOM_IRON_WALL;
+      moved = 1;
+    }
+    break;
+  }
+
+  if (moved) {
+    player.room = next_room;
+    spawn_enemy(0);
+    printf("\nYOU ARRIVE AT YOUR DESTINATION.");
+  } else {
+    printf("\nTHAT WOULD BE SILLY.");
+  }
 }
+
 void do_pickup(char *noun) {
-  printf("%s", noun);
-  printf("\nYOU PICKED IT UP.");
+  if (noun != NULL)
+    printf("\nYOU PICKED UP THE %s.", noun);
+  else
+    printf("\nPICK UP WHAT?");
 }
+
 void do_use(char *noun) {
-  printf("%s", noun);
-  printf("\nYOU USED IT.");
+  if (noun != NULL)
+    printf("\nYOU USED THE %s.", noun);
+  else
+    printf("\nUSE WHAT?");
 }
 
 /* --- Commands --- */
